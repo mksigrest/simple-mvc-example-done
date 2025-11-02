@@ -284,6 +284,14 @@ const notFound = (req, res) => {
   });
 };
 
+const createDog = (request, response) => {
+    const { name, breed, age } = request.body;
+
+    if (!name || !breed || !age == null) {
+        return response.status(400).send('Error: missing required attribute');
+    }
+}
+
 // export the relevant public controller functions
 module.exports = {
   index: hostIndex,
