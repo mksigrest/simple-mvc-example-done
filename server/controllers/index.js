@@ -290,6 +290,9 @@ const createDog = (request, response) => {
     if (!name || !breed || !age == null) {
         return response.status(400).send('Error: missing required attribute');
     }
+
+    const newDog = new dog({ name, breed, age });
+    newDog.save()
 }
 
 // export the relevant public controller functions
