@@ -103,8 +103,10 @@ const hostPage3 = (req, res) => {
 };
 
 // Function to render the untemplated page4.
-const hostPage4 = (req, res) => {
-    res.render('page4');
+const hostPage4 = async (req, res) => {
+    try {
+
+    }
 };
 
 // Get name will return the name of the last added cat.
