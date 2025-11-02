@@ -1,3 +1,4 @@
+/* eslint-disable no-else-return */
 /* eslint-disable linebreak-style */
 /* eslint-disable brace-style */
 /* eslint-disable indent */
@@ -308,25 +309,33 @@ const createDog = async (request, response) => {
 }
 
 const increaseAge = async (request, response) => {
-    const { name } = request.body;
-
-    if (!name) {
-        return response.status(400).json({ error: 'missing required attribute' });
-    }
-
-    const doc = Dog.findOne({}).sort({ 'createdDate': 'descending' }).lean().exec();
     try {
-        if (doc) {
-            return res.json({ name: doc.name });
+        const { name } = request.body;
+
+        if (!name) {
+            return response.status(400).json({ error: 'missing required attribute' });
+        }
+
+        const doc = await Dog.findOneAndUpdate(
+            { name: name.trim() },
+            { $inc: { age: 1 } },
+            { new: true }).lean().exec();
+
+        if (!doc) {
+            return response.status(404).json({ error: `No dog found with name ${name}` });
+        }
+        else {
+            return response.json({
+                message: `Dog ${doc.name} is now ${doc.age}`,
+                dog: doc,
+            });
         }
     }
-     
-    catch (err) {
-        console.log(err);
-        return res.status(500).json({ error: 'Something went wrong contacting the database' });
-    }
-}
+    catch {
 
+    }
+    
+}
 // export the relevant public controller functions
 module.exports = {
   index: hostIndex,
