@@ -21,12 +21,8 @@
 
     <ul>
         {{#each dogs}}
-        <li>
-            <strong>{{name}}</strong> - breed: {{breed}}, age: {{age}}
-        </li>
-        {{else}}
-        <li>No dogs found in database</li>
-        {{/else}}
+        <li><strong>{{name}}</strong> — breed {{breed}}, age {{age}}</li>
+        {{/each}}
     </ul>
 
 </body>
