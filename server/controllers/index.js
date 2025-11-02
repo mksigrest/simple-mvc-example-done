@@ -301,10 +301,13 @@ const createDog = async (request, response) => {
     const newDog = new Dog({ name, breed, age });
     await newDog.save();
 
-
+    return response.status(201).json({
+        message: 'Dog created',
+        dog: { name: newDog.name, breed: newDog.breed, age: newDog.age },
+    });
 }
 
-const increaseAge = (request, response) => {
+const increaseAge = async (request, response) => {
     const { name } = request.body;
 
     if (!name) {
