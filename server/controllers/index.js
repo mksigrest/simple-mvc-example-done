@@ -291,7 +291,7 @@ const notFound = (req, res) => {
   });
 };
 
-const createDog = (request, response) => {
+const createDog = async (request, response) => {
     const { name, breed, age } = request.body;
 
     if (!name || !breed || !age == null) {
@@ -299,7 +299,9 @@ const createDog = (request, response) => {
     }
 
     const newDog = new Dog({ name, breed, age });
-    newDog.save()
+    await newDog.save();
+
+
 }
 
 const increaseAge = (request, response) => {
