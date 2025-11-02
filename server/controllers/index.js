@@ -302,8 +302,15 @@ const increaseAge = (request, response) => {
         return response.status(400).json({ error: 'missing required attribute' });
     }
 
-    dog.findOne({ name })
-    .then ((dog))
+    const doc = await Cat.findOne({}).sort({ 'createdDate': 'descending' }).lean().exec();
+    if (doc) {
+        return res.json({ name: doc.name });
+    }
+     
+    catch (err) {
+        console.log(err);
+        return res.status(500).json({ error: 'Something went wrong contacting the database' });
+    }
 }
 
 // export the relevant public controller functions
@@ -316,5 +323,7 @@ module.exports = {
   setName,
   updateLast,
   searchName,
-  notFound,
+    notFound,
+    createDog,
+  increaseAge,
 };
