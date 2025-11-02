@@ -332,7 +332,7 @@ const increaseAge = async (request, response) => {
         }
     }
     catch (err) {
-        console.error('increaseAge error:' err);
+        console.error('increaseAge error:', err);
         return response.status(500).json({ error: 'Failed to increase age' });
     }
 };
