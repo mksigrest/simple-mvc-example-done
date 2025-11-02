@@ -295,8 +295,8 @@ const createDog = (request, response) => {
         return response.status(400).json({ error: 'missing required attribute'});
     }
 
-    const newDog = new dog({ name, breed, age });
-    newDog.save()
+    const newDog = new Dog({ name, breed, age });
+    await newDog.save()
 }
 
 const increaseAge = (request, response) => {
