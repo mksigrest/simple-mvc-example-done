@@ -3,10 +3,8 @@
 /* eslint-disable brace-style */
 /* eslint-disable indent */
 // pull in our models. This will automatically load the index.js from that folder
-const models = require('../models');
-
-// get the Cat model
-const { Cat, Dog } = models;
+const Cat = require('../models/Cat');
+const Dog = require('../models/Dog');
 
 // Function to handle rendering the index page.
 const hostIndex = async (req, res) => {
