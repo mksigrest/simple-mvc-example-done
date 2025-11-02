@@ -105,7 +105,15 @@ const hostPage3 = (req, res) => {
 // Function to render the untemplated page4.
 const hostPage4 = async (req, res) => {
     try {
+        const dogs = await Dog.find({}).lean().exec();
 
+        return res.render('page4', {
+            dogs,
+        });
+    }
+    catch (err) {
+        console.error('Error fetching dogs:', err);
+        return res.status(500).json({ error: 'Failed to load dogs' });
     }
 };
 
