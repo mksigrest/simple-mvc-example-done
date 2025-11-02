@@ -295,6 +295,14 @@ const createDog = (request, response) => {
     newDog.save()
 }
 
+const increaseAge = (request, response) => {
+    const { name } = request.body;
+
+    if (!name) {
+        return response.status(400).send('Error: missing required attribute');
+    }
+}
+
 // export the relevant public controller functions
 module.exports = {
   index: hostIndex,
