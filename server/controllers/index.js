@@ -1,3 +1,6 @@
+/* eslint-disable linebreak-style */
+/* eslint-disable brace-style */
+/* eslint-disable indent */
 // pull in our models. This will automatically load the index.js from that folder
 const models = require('../models');
 
@@ -296,7 +299,7 @@ const createDog = (request, response) => {
     }
 
     const newDog = new Dog({ name, breed, age });
-    await newDog.save()
+    newDog.save()
 }
 
 const increaseAge = (request, response) => {
@@ -306,9 +309,11 @@ const increaseAge = (request, response) => {
         return response.status(400).json({ error: 'missing required attribute' });
     }
 
-    const doc = await Cat.findOne({}).sort({ 'createdDate': 'descending' }).lean().exec();
-    if (doc) {
-        return res.json({ name: doc.name });
+    const doc = Dog.findOne({}).sort({ 'createdDate': 'descending' }).lean().exec();
+    try {
+        if (doc) {
+            return res.json({ name: doc.name });
+        }
     }
      
     catch (err) {
