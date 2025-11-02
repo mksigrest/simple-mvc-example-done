@@ -1,9 +1,9 @@
 // pull in our models. This will automatically load the index.js from that folder
 const models = require('../models');
-const dog = require('../models/Dog');
 
 // get the Cat model
 const { Cat } = models;
+const { Dog } = models;
 
 // Function to handle rendering the index page.
 const hostIndex = async (req, res) => {
@@ -288,7 +288,7 @@ const createDog = (request, response) => {
     const { name, breed, age } = request.body;
 
     if (!name || !breed || !age == null) {
-        return response.status(400).send('Error: missing required attribute');
+        return response.status(400).json({ error: 'missing required attribute'});
     }
 
     const newDog = new dog({ name, breed, age });
@@ -299,8 +299,11 @@ const increaseAge = (request, response) => {
     const { name } = request.body;
 
     if (!name) {
-        return response.status(400).send('Error: missing required attribute');
+        return response.status(400).json({ error: 'missing required attribute' });
     }
+
+    dog.findOne({ name })
+    .then ((dog))
 }
 
 // export the relevant public controller functions
