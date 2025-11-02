@@ -331,11 +331,11 @@ const increaseAge = async (request, response) => {
             });
         }
     }
-    catch {
-
+    catch (err) {
+        console.error('increaseAge error:' err);
+        return response.status(500).json({ error: 'Failed to increase age' });
     }
-    
-}
+};
 // export the relevant public controller functions
 module.exports = {
   index: hostIndex,
