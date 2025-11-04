@@ -1,8 +1,10 @@
+/* eslint-disable no-else-return */
+/* eslint-disable linebreak-style */
+/* eslint-disable brace-style */
+/* eslint-disable indent */
 // pull in our models. This will automatically load the index.js from that folder
-const models = require('../models');
-
-// get the Cat model
-const { Cat } = models;
+const Cat = require('../models/Cat');
+const Dog = require('../models/Dog');
 
 // Function to handle rendering the index page.
 const hostIndex = async (req, res) => {
@@ -98,6 +100,21 @@ const hostPage2 = (req, res) => {
 // Function to render the untemplated page3.
 const hostPage3 = (req, res) => {
   res.render('page3');
+};
+
+// Function to render the untemplated page4.
+const hostPage4 = async (req, res) => {
+    try {
+        const dogs = await Dog.find({}).lean().exec();
+
+        return res.render('page4', {
+            dogs,
+        });
+    }
+    catch (err) {
+        console.error('Error fetching dogs:', err);
+        return res.status(500).json({ error: 'Failed to load dogs' });
+    }
 };
 
 // Get name will return the name of the last added cat.
@@ -283,15 +300,62 @@ const notFound = (req, res) => {
   });
 };
 
+const createDog = async (request, response) => {
+    const { name, breed, age } = request.body;
+
+    if (!name || !breed || !age == null) {
+        return response.status(400).json({ error: 'missing required attribute'});
+    }
+
+    const newDog = new Dog({ name, breed, age });
+    await newDog.save();
+
+    return response.status(201).json({
+        message: 'Dog created',
+        dog: { name: newDog.name, breed: newDog.breed, age: newDog.age },
+    });
+}
+
+const increaseAge = async (request, response) => {
+    try {
+        const { name } = request.body;
+
+        if (!name) {
+            return response.status(400).json({ error: 'missing required attribute' });
+        }
+
+        const doc = await Dog.findOneAndUpdate(
+            { name: name.trim() },
+            { $inc: { age: 1 } },
+            { new: true }).lean().exec();
+
+        if (!doc) {
+            return response.status(404).json({ error: `No dog found with name ${name}` });
+        }
+        else {
+            return response.json({
+                message: `Dog ${doc.name} is now ${doc.age}`,
+                dog: doc,
+            });
+        }
+    }
+    catch (err) {
+        console.error('increaseAge error:', err);
+        return response.status(500).json({ error: 'Failed to increase age' });
+    }
+};
 // export the relevant public controller functions
 module.exports = {
   index: hostIndex,
   page1: hostPage1,
   page2: hostPage2,
   page3: hostPage3,
+  page4: hostPage4,
   getName,
   setName,
   updateLast,
   searchName,
   notFound,
+  createDog,
+  increaseAge,
 };
